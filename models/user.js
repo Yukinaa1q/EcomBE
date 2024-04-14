@@ -40,13 +40,12 @@ const userSchema = new Schema(
         product: {
           type: Schema.Types.ObjectId,
           ref: "Book",
-          //require: false,
+          require: false,
         },
         quantity: {
           type: Number,
-          //require: false,
+          require: false,
         },
-        require: false,
       },
     ],
   },

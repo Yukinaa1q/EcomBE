@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Book = require("../models/book.js");
+//const Book = require("../models/book.js");
 const User = require("../models/user.js");
 
 const getTotalprice = (cart) => {
@@ -9,6 +9,18 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
+router.get("/:id", async (req, res) => {
+  try {
+    const result = await User.findOne({ id }).populate("cart");
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.json({ message: "There is no such user" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.get("/filterProducts", async (req, res) => {
   const {
     name,
