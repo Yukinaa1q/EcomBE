@@ -42,7 +42,7 @@ const userSchema = new Schema(
           ref: "Book",
           //require: false,
         },
-        quality: {
+        quantity: {
           type: Number,
           //require: false,
         },
