@@ -10,6 +10,7 @@ const getTotalprice = (cart) => {
   return total;
 };
 router.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const result = await User.findOne({ id }).populate("cart");
     if (result) {
