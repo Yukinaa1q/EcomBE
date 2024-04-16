@@ -1,5 +1,5 @@
 const router = require("express").Router();
-//const Book = require("../models/book.js");
+const Book = require("../models/book.js");
 const User = require("../models/user.js");
 
 const getTotalprice = (cart) => {
@@ -12,7 +12,13 @@ const getTotalprice = (cart) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await User.findOne({ id }).populate("cart");
+    const result = await User.findOne({ id }).populate({
+      path: "cart",
+      populate: {
+        path: "product",
+        model: "Book",
+      },
+    });
     if (result) {
       res.status(200).json(result);
     } else {
