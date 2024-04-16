@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { mongoose } = require("mongoose");
 const Book = require("../models/book.js");
 const User = require("../models/user.js");
 
@@ -9,6 +10,41 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
+router.post("/:id/:product_id/:quantity", async (req, res) => {
+  const { id, product_id, quantity } = req.params;
+  try {
+    const fin = await User.findOne({ id });
+    if (!fin) {
+      res.json({ message: "There is no user have this id" });
+    }
+    const p = new mongoose.Types.ObjectId(product_id);
+    fin.cart.push({
+      product: product_id,
+      quantity: parseInt(quantity),
+    });
+    await fin.save();
+    res.json(fin);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+router.delete("/:id/:product_id", async (req, res) => {
+  const { id, product_id } = req.params;
+  try {
+    const fin = await User.findOne({ id });
+    if (!fin) {
+      res.json({ message: "There is no user have this id" });
+    }
+
+    fin.cart.pull({
+      _id: product_id,
+    });
+    await fin.save();
+    res.json(fin);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 router.get("/:id/shipping", async (req, res) => {
   const { id } = req.params;
   try {
@@ -49,11 +85,14 @@ router.get("/filterProducts", async (req, res) => {
     quantity_start,
     quantity_end,
     genre_type,
+    page,
+    limit,
   } = req.query;
   let genre_type1 = genre_type.split(",");
   if (genre_type1[0] == "") {
     genre_type1 = [];
   }
+  const skip = (page - 1) * limit;
   console.log(genre_type1);
   try {
     const bigArray = await Book.find({}).sort({ _id: 1 });
@@ -108,6 +147,8 @@ router.get("/filterProducts", async (req, res) => {
       }
       finalResult.push(filteredProduct);
     }
+    finalResult.skip(skip).limit(limit).exec();
+
     res.json(finalResult);
   } catch (error) {
     res.json({ error: error.message });
