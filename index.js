@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const app = express();
 const bookroute = require("./routes/bookFunctions.js");
 const userroute = require("./routes/userFunctions.js");
+const reviewroute = require("./routes/reviewFunctions.js");
 require("dotenv").config();
 app.use(express.json());
 app.use(
@@ -22,6 +23,7 @@ app.use(cookieParser());
 //routes
 app.use("/", bookroute);
 app.use("/user", userroute);
+app.use("/review", reviewroute);
 mongoose
   .connect(process.env.MONG_URI)
   .then(() => {
