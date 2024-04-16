@@ -9,6 +9,19 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
+router.get("/:id/shipping", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await User.findOne({ id }).distinct("shipping");
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.json({ message: "There is something wrong" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {

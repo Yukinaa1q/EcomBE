@@ -32,6 +32,18 @@ router.get("/", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+router.get("/home", async (req, res) => {
+  try {
+    const result = await Book.aggregate([{ $sample: { size: 8 } }]);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.json({ message: "There is something wrong" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -47,6 +59,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
 // router.post("/create", async (req, res) => {
 //   const { size, genre, price, name, product_count, provider } = req.body;
 

@@ -29,6 +29,18 @@ const userSchema = new Schema(
           type: String,
           require: true,
         },
+        ward: {
+          type: String,
+          require: true,
+        },
+        district: {
+          type: String,
+          require: true,
+        },
+        city: {
+          type: String,
+          require: true,
+        },
         ship_phone: {
           type: String,
           require: true,
