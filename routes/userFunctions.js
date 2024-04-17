@@ -58,6 +58,27 @@ router.get("/:id/shipping", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+router.post("/:id/shipping", async (req, res) => {
+  const { id } = req.params;
+  const { address, ship_phone, city, district, ward } = req.body;
+  try {
+    const result = await User.findOne({ id });
+    if (!result) {
+      return res.json({ message: "There is no user having this id" });
+    }
+    result.shipping.push({
+      address: address,
+      ship_phone: ship_phone,
+      city: city,
+      district: district,
+      ward: ward,
+    });
+    await result.save();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
