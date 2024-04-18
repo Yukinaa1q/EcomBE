@@ -89,6 +89,7 @@ router.post("/:id/shipping/update", async (req, res) => {
     if (!result) {
       return res.json({ message: "There is no user having this id" });
     }
+    result.shipping = [];
     result.shipping.push({
       address: address,
       ship_phone: ship_phone,
