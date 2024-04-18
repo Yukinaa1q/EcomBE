@@ -83,7 +83,7 @@ router.post("/:id/shipping", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await User.findOne({ id }).populate({
+    const result = await User.findById(id).populate({
       path: "cart",
       populate: {
         path: "product",
