@@ -85,7 +85,7 @@ router.post("/:id/shipping", async (req, res) => {
   const { id } = req.params;
   const { address, ship_phone, city, district, ward } = req.body;
   try {
-    const result = await User.findOne({ id });
+    const result = await User.findById(id);
     if (!result) {
       return res.json({ message: "There is no user having this id" });
     }
