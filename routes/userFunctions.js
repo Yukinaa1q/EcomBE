@@ -10,8 +10,9 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
-router.post("/:id/:product_id/:quantity", async (req, res) => {
-  const { id, product_id, quantity } = req.params;
+router.post("/:id/:product_id", async (req, res) => {
+  const { id, product_id } = req.params;
+  const { quantity } = req.body;
   try {
     const fin = await User.findOne({ id });
     if (!fin) {
