@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-router.get("/home", userVerification, async (req, res) => {
+router.get("/home", async (req, res) => {
   try {
     const result = await Book.aggregate([{ $sample: { size: 8 } }]);
     if (result) {
