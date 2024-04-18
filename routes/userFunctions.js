@@ -20,7 +20,7 @@ router.put("/:id/:product_id", async (req, res) => {
     }
     for (let item of fin.cart) {
       if (product_id == item.product) {
-        item.product = quantity;
+        item.product = parseInt(quantity);
         break;
       }
     }
