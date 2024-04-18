@@ -10,6 +10,26 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
+router.put("/:id/:product_id", async (req, res) => {
+  const { id, product_id } = req.params;
+  const { quantity } = req.body;
+  try {
+    const fin = await User.findById(id);
+    if (!fin) {
+      res.json({ message: "There is no user have this id" });
+    }
+    for (let item of fin.cart) {
+      if (product_id == item.product) {
+        item.product = quantity;
+        break;
+      }
+    }
+    await fin.save();
+    res.status(200).json(fin);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.post("/:id/:product_id", async (req, res) => {
   const { id, product_id } = req.params;
   const { quantity } = req.body;
