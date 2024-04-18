@@ -40,6 +40,7 @@ router.post("/login", async (req, res, next) => {
       message: "User logged in successfully",
       success: true,
       token,
+      userid: user._id,
     });
     next();
   } catch (error) {
