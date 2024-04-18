@@ -10,7 +10,7 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
-router.put("/:id/:product_id", async (req, res) => {
+router.put("/:id/:product_id/update", async (req, res) => {
   const { id, product_id } = req.params;
   const { quantity } = req.body;
   try {
