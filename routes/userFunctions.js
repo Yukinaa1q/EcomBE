@@ -71,7 +71,7 @@ router.delete("/:id/:product_id", async (req, res) => {
 router.get("/:id/shipping", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await User.findOne({ id }).distinct("shipping");
+    const result = await User.findById(id).distinct("shipping");
     if (result) {
       res.status(200).json(result);
     } else {
