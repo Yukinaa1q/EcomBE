@@ -6,6 +6,7 @@ const app = express();
 const bookroute = require("./routes/bookFunctions.js");
 const userroute = require("./routes/userFunctions.js");
 const reviewroute = require("./routes/reviewFunctions.js");
+const authroute = require("./routes/authFunction.js");
 require("dotenv").config();
 app.use(express.json());
 app.use(
@@ -21,6 +22,7 @@ app.use(
 );
 app.use(cookieParser());
 //routes
+app.use("/auth", authroute);
 app.use("/", bookroute);
 app.use("/user", userroute);
 app.use("/review", reviewroute);

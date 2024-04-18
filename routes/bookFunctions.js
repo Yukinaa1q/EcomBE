@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 const Book = require("../models/book.js");
-
+const { userVerification } = require("../middlewares/authMiddleware.js");
 // const getNewID = (lastID) => {
 //   const numericPart = parseInt(lastID.slice(2), 10);
 //   const nextNumericPart = numericPart + 1;
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-router.get("/home", async (req, res) => {
+router.get("/home", userVerification, async (req, res) => {
   try {
     const result = await Book.aggregate([{ $sample: { size: 8 } }]);
     if (result) {
