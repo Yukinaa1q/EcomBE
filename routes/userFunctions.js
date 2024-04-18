@@ -52,7 +52,7 @@ router.post("/:id/:product_id", async (req, res) => {
 router.delete("/:id/:product_id", async (req, res) => {
   const { id, product_id } = req.params;
   try {
-    const fin = await User.findOne({ id });
+    const fin = await User.findbyID({ id });
     if (!fin) {
       res.json({ message: "There is no user have this id" });
     }
