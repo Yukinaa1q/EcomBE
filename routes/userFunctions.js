@@ -123,21 +123,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 router.get("/filterProducts", async (req, res) => {
-  const {
-    name,
-    price_start,
-    price_end,
-    quantity_start,
-    quantity_end,
-    genre_type,
-    page,
-    limit,
-  } = req.query;
+  const { name, price_start, price_end, genre_type } = req.query;
   let genre_type1 = genre_type.split(",");
   if (genre_type1[0] == "") {
     genre_type1 = [];
   }
-  const skip = (page - 1) * limit;
+
   console.log(genre_type1);
   try {
     const bigArray = await Book.find({}).sort({ _id: 1 });
@@ -158,20 +149,7 @@ router.get("/filterProducts", async (req, res) => {
         console.log(3);
         continue;
       }
-      if (
-        quantity_start != "undefined" &&
-        filteredProduct.product_count < quantity_start
-      ) {
-        console.log(4);
-        continue;
-      }
-      if (
-        quantity_end != "undefined" &&
-        filteredProduct.product_count > quantity_end
-      ) {
-        console.log(5);
-        continue;
-      }
+
       let checke = true;
       if (filteredProduct.genre) {
         for (const genre of genre_type1) {
@@ -192,7 +170,6 @@ router.get("/filterProducts", async (req, res) => {
       }
       finalResult.push(filteredProduct);
     }
-    finalResult.skip(skip).limit(limit).exec();
 
     res.json(finalResult);
   } catch (error) {
