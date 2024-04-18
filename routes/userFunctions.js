@@ -14,7 +14,7 @@ router.post("/:id/:product_id", async (req, res) => {
   const { id, product_id } = req.params;
   const { quantity } = req.body;
   try {
-    const fin = await User.findOne({ id });
+    const fin = await User.findById(id);
     if (!fin) {
       res.json({ message: "There is no user have this id" });
     }
