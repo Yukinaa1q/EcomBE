@@ -51,6 +51,7 @@ router.post("/:id/:product_id", async (req, res) => {
 });
 router.delete("/:id/:product_id", async (req, res) => {
   const { id, product_id } = req.params;
+  const { quantity } = req.body;
   try {
     const fin = await User.findById(id);
     if (!fin) {
@@ -58,7 +59,8 @@ router.delete("/:id/:product_id", async (req, res) => {
     }
 
     fin.cart.pull({
-      _id: product_id,
+      product: product_id,
+      quantity: quantity,
     });
     await fin.save();
     res.json(fin);
