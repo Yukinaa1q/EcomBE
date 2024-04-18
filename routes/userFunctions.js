@@ -81,7 +81,7 @@ router.get("/:id/shipping", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-router.post("/:id/shipping", async (req, res) => {
+router.post("/:id/shipping/update", async (req, res) => {
   const { id } = req.params;
   const { address, ship_phone, city, district, ward } = req.body;
   try {
