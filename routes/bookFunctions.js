@@ -45,7 +45,7 @@ router.get("/home", async (req, res) => {
   }
 });
 router.get("/filterProducts", async (req, res) => {
-  const { name, price_start, price_end, genre_type } = req.query;
+  const { name, price_start, price_end, genre_type, order } = req.query;
   console.log(genre_type);
   let genre_type1;
   if (!genre_type) genre_type1 = [];
@@ -70,7 +70,14 @@ router.get("/filterProducts", async (req, res) => {
   //   }
   // } else {
   try {
-    const bigArray = await Book.find({}).sort({ _id: 1 });
+    let bigArray;
+    if (order != "undefined" && order == "asc") {
+      bigArray = await Book.find({}).sort({ price: 1 });
+    } else if (order != "undefined" && order == "desc") {
+      bigArray = await Book.find({}).sort({ price: -1 });
+    } else {
+      bigArray = await Book.find({}).sort({ _id: 1 });
+    }
 
     let finalResult = [];
     for (const filteredProduct of bigArray) {
