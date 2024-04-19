@@ -46,11 +46,11 @@ router.get("/home", async (req, res) => {
 });
 router.get("/filterProducts", async (req, res) => {
   const { name, price_start, price_end, genre_type } = req.query;
-  // let genre_type1 = genre_type;
-  // if (genre_type1[0] == "") {
-  //   genre_type1 = [];
-  // }
-  console.log(genre_type1);
+  let genre_type1 = genre_type;
+  if (!genre_type1) {
+    genre_type1 = [];
+  }
+  console.log(name, price_start, price_end, genre_type1);
   // if (
   //   name == "undefined" &&
   //   price_start == "undefined" &&
@@ -75,7 +75,7 @@ router.get("/filterProducts", async (req, res) => {
     let finalResult = [];
     for (const filteredProduct of bigArray) {
       console.log(filteredProduct);
-      if (name != "undefined" && filteredProduct.name.indexOf(name) == -1) {
+      if (name != "null" && filteredProduct.name.indexOf(name) == -1) {
         console.log(1);
         continue;
       }
@@ -109,7 +109,7 @@ router.get("/filterProducts", async (req, res) => {
       }
       finalResult.push(filteredProduct);
     }
-
+    //console.log(finalResult);
     res.json(finalResult);
   } catch (error) {
     res.json({ error: error.message });
