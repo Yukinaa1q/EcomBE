@@ -46,11 +46,12 @@ router.get("/home", async (req, res) => {
 });
 router.get("/filterProducts", async (req, res) => {
   const { name, price_start, price_end, genre_type } = req.query;
-  let genre_type1 = genre_type;
+  console.log(genre_type);
+  let genre_type1 = genre_type.split(",");
   if (!genre_type1) {
     genre_type1 = [];
   }
-  console.log(name, price_start, price_end, genre_type1);
+  console.log(genre_type1);
   // if (
   //   name == "undefined" &&
   //   price_start == "undefined" &&
