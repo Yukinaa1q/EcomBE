@@ -103,28 +103,10 @@ router.post("/:id/shipping/update", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await User.findById(id).populate({
-      path: "cart",
-      populate: {
-        path: "product",
-        model: "Book",
-      },
-    });
-    if (result) {
-      res.status(200).json(result);
-    } else {
-      res.json({ message: "There is no such user" });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+
 router.get("/filterProducts", async (req, res) => {
   const { name, price_start, price_end, genre_type } = req.query;
-  let genre_type1 = genre_type.split(",");
+  let genre_type1 = genre_type;
   if (genre_type1[0] == "") {
     genre_type1 = [];
   }
@@ -174,6 +156,25 @@ router.get("/filterProducts", async (req, res) => {
     res.json(finalResult);
   } catch (error) {
     res.json({ error: error.message });
+  }
+});
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await User.findById(id).populate({
+      path: "cart",
+      populate: {
+        path: "product",
+        model: "Book",
+      },
+    });
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.json({ message: "There is no such user" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 module.exports = router;
