@@ -3,10 +3,10 @@ const Book = require("./book.js");
 const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
-    id: {
-      type: String,
-      require: true,
-    },
+    // id: {
+    //   type: String,
+    //   require: true,
+    // },
     username: {
       type: String,
       require: true,
