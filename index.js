@@ -17,6 +17,7 @@ app.use(
       "http://localhost:3000",
       "https://book-store-two-cyan.vercel.app",
       "https://japbook-fe.vercel.app",
+      "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
     ],
     methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
