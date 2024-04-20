@@ -7,6 +7,7 @@ const bookroute = require("./routes/bookFunctions.js");
 const userroute = require("./routes/userFunctions.js");
 const reviewroute = require("./routes/reviewFunctions.js");
 const authroute = require("./routes/authFunction.js");
+const paymentroute = require("./routes/paymentFunction.js");
 require("dotenv").config();
 app.use(express.json());
 app.use(
@@ -27,6 +28,7 @@ app.use("/auth", authroute);
 app.use("/", bookroute);
 app.use("/user", userroute);
 app.use("/review", reviewroute);
+app.use("/payment", paymentroute);
 mongoose
   .connect(process.env.MONG_URI)
   .then(() => {
