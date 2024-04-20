@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:8000",
-      "http://localhost:4999",
+      "http://localhost:3000",
       "https://book-store-two-cyan.vercel.app",
       "https://japbook-fe.vercel.app",
     ],
