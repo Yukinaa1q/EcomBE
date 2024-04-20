@@ -15,6 +15,7 @@ app.use(
       "http://localhost:8000",
       "http://localhost:4999",
       "https://book-store-two-cyan.vercel.app",
+      "https://japbook-fe.vercel.app",
     ],
     methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
