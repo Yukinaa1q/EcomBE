@@ -45,79 +45,102 @@ router.get("/home", async (req, res) => {
   }
 });
 router.get("/filterProducts", async (req, res) => {
-  const { name, price_start, price_end, genre_type, order } = req.query;
+  const { name, price_start, price_end, genre_type, order, page } = req.query;
   console.log(genre_type);
   let genre_type1;
   if (!genre_type) genre_type1 = [];
   else genre_type1 = genre_type.split(",");
-  console.log(genre_type1);
-  // if (
-  //   name == "undefined" &&
-  //   price_start == "undefined" &&
-  //   price_end == "undefined" &&
-  //   genre_type == "undefined"
-  // ) {
-  //   try {
-  //     const finalResult = await Book.find({}).sort({ id: 1 });
+  console.log(genre_type1, name, page);
 
-  //     if (finalResult) {
-  //       res.status(200).json(finalResult);
-  //     } else {
-  //       res.json({ message: "There are no books at the moment" });
-  //     }
-  //   } catch (error) {
-  //     res.status(400).json({ error: error.message });
-  //   }
-  // } else {
   try {
     let bigArray;
+    const pa = parseInt(page);
+    const limit = 9;
+    let skip = (pa - 1) * limit;
+
+    // if (order != "undefined" && order == "asc") {
+    //   bigArray = await Book.find({}).skip(skip).limit(limit).sort({ price: 1 });
+    // } else if (order != "undefined" && order == "desc") {
+    //   bigArray = await Book.find({})
+    //     .skip(skip)
+    //     .limit(limit)
+    //     .sort({ price: -1 });
+    // } else {
+    //   bigArray = await Book.find({}).skip(skip).limit(limit).sort({ _id: 1 });
+    // }
+
+    // let finalResult = [];
+    // for (const filteredProduct of bigArray) {
+    //   console.log(filteredProduct);
+    //   if (name != "null" && filteredProduct.name.indexOf(name) == -1) {
+    //     console.log(1);
+    //     continue;
+    //   }
+
+    //   if (price_start != "undefined" && filteredProduct.price < price_start) {
+    //     console.log(2);
+    //     continue;
+    //   }
+    //   if (price_end != "undefined" && filteredProduct.price > price_end) {
+    //     console.log(3);
+    //     continue;
+    //   }
+
+    //   let checke = true;
+    //   if (filteredProduct.genre) {
+    //     for (const genre of genre_type1) {
+    //       if (!filteredProduct.genre.includes(genre)) {
+    //         checke = false;
+    //         break;
+    //       }
+    //     }
+    //     console.log(checke);
+    //     console.log(6);
+    //   } else {
+    //     checke = true;
+    //   }
+
+    //   if (!checke) {
+    //     console.log(7);
+    //     continue;
+    //   }
+    //   finalResult.push(filteredProduct);
+    // }
+    // //console.log(finalResult);
+    // res.json(finalResult);
+    let filter = {};
+    if (name && name != "undefined") {
+      filter.name = { $regex: new RegExp(name, "i") };
+    }
+    if (price_start && price_start != "undefined") {
+      filter.price = { $gte: parseInt(price_start) };
+    }
+    if (price_end && price_end != "undefined") {
+      filter.price = { ...filter.price, $lte: parseInt(price_end) };
+    }
+    if (genre_type1 != []) {
+      filter.genre = { $in: genre_type1 };
+    }
     if (order != "undefined" && order == "asc") {
-      bigArray = await Book.find({}).sort({ price: 1 });
+      bigArray = await Book.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ price: 1 });
     } else if (order != "undefined" && order == "desc") {
-      bigArray = await Book.find({}).sort({ price: -1 });
+      bigArray = await Book.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ price: -1 });
     } else {
-      bigArray = await Book.find({}).sort({ _id: 1 });
+      bigArray = await Book.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort({ _id: 1 });
     }
+    const countTotal = await Book.countDocuments();
 
-    let finalResult = [];
-    for (const filteredProduct of bigArray) {
-      console.log(filteredProduct);
-      if (name != "null" && filteredProduct.name.indexOf(name) == -1) {
-        console.log(1);
-        continue;
-      }
-
-      if (price_start != "undefined" && filteredProduct.price < price_start) {
-        console.log(2);
-        continue;
-      }
-      if (price_end != "undefined" && filteredProduct.price > price_end) {
-        console.log(3);
-        continue;
-      }
-
-      let checke = true;
-      if (filteredProduct.genre) {
-        for (const genre of genre_type1) {
-          if (!filteredProduct.genre.includes(genre)) {
-            checke = false;
-            break;
-          }
-        }
-        console.log(checke);
-        console.log(6);
-      } else {
-        checke = true;
-      }
-
-      if (!checke) {
-        console.log(7);
-        continue;
-      }
-      finalResult.push(filteredProduct);
-    }
-    //console.log(finalResult);
-    res.json(finalResult);
+    let totalPage = Math.ceil(countTotal / limit);
+    res.json({ bigArray, page: pa, totalPage: totalPage });
   } catch (error) {
     res.json({ error: error.message });
   }
