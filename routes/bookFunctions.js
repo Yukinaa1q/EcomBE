@@ -144,6 +144,7 @@ router.get("/filterProducts", async (req, res) => {
         .limit(limit)
         .sort({ _id: 1 });
     }
+    console.log(filter);
     const fullArray = await Book.find(filter);
     const countFilteredBook = Object.keys(fullArray).length;
     const countTotal = await Book.countDocuments();
