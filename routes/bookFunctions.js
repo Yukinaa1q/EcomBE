@@ -125,7 +125,7 @@ router.get("/filterProducts", async (req, res) => {
     if (price_end && price_end != "undefined") {
       filter.price = { ...filter.price, $lte: parseInt(price_end) };
     }
-    if (genre_type1 != []) {
+    if (genre_type1.length != 0) {
       filter.genre = { $in: genre_type1 };
     }
     if (order != "undefined" && order == "asc") {
