@@ -45,7 +45,14 @@ router.get("/home", async (req, res) => {
   }
 });
 router.get("/filterProducts", async (req, res) => {
-  const { name, price_start, price_end, genre_type, order, page } = req.query;
+  const {
+    name,
+    price_start,
+    price_end,
+    genre_type,
+    order,
+    page = 1,
+  } = req.query;
   console.log(genre_type);
   let genre_type1;
   if (!genre_type) genre_type1 = [];
