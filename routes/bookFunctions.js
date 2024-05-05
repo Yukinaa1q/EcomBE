@@ -144,9 +144,15 @@ router.get("/filterProducts", async (req, res) => {
         .limit(limit)
         .sort({ _id: 1 });
     }
+    const fullArray = await Book.find(filter);
+    const countFilteredBook = Object.keys(fullArray).length;
     const countTotal = await Book.countDocuments();
     let totalPage = Math.ceil(countTotal / limit);
-    bigArray.push({ page: pa, totalPage: totalPage });
+    bigArray.push({
+      page: pa,
+      totalFilteredBook: countFilteredBook,
+      totalPage: totalPage,
+    });
     res.json(bigArray);
   } catch (error) {
     res.json({ error: error.message });
