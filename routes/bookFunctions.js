@@ -138,9 +138,9 @@ router.get("/filterProducts", async (req, res) => {
         .sort({ _id: 1 });
     }
     const countTotal = await Book.countDocuments();
-
     let totalPage = Math.ceil(countTotal / limit);
-    res.json({ bigArray, page: pa, totalPage: totalPage });
+    bigArray.push({ page: pa, totalPage: totalPage });
+    res.json(bigArray);
   } catch (error) {
     res.json({ error: error.message });
   }
