@@ -45,7 +45,13 @@ router.get("/:id/:price/setOrder", async (req, res) => {
 router.get("/:id/checkOrder", async (req, res) => {
   const { id } = req.params;
   try {
-    const fin = await User.findById(id);
+    const fin = await User.findById(id).populate({
+      path: "order",
+      populate: {
+        path: "cart1",
+        populate: { path: "product1", model: "Book" },
+      },
+    });
     if (!fin) {
       return res.json({ message: "There is no user have this id" });
     }
