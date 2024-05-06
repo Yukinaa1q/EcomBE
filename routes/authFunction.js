@@ -62,10 +62,11 @@ router.post("/signup", async (req, res) => {
     // Create a new user and save it to the database
     await User.create({
       username,
-      password, // You should hash the password before saving it in the database
+      password,
       email,
       cart: [],
       shipping: [],
+      order: [],
     });
 
     res.status(201).json({ message: "User created successfully" });

@@ -10,13 +10,57 @@ const getTotalprice = (cart) => {
   }
   return total;
 };
+router.get("/:id/:price/setOrder", async (req, res) => {
+  const { id, price } = req.params;
+  try {
+    const fin = await User.findById(id);
+    const day = new Date();
+    if (!fin) {
+      return res.json({ message: "There is no user have this id" });
+    }
+
+    fin.order.push({
+      totalPrice: price,
+      orderdate: day.toLocaleString(),
+      cart1: [],
+    });
+
+    for (const item of fin.cart) {
+      fin.order[fin.order.length - 1].cart1.push({
+        product1: item.product,
+        quantity1: item.quantity,
+      });
+    }
+    if (fin.order[fin.order.length - 1].cart1.length == 0) {
+      return res.json({ message: "You must have some products in cart" });
+    }
+    fin.cart = [];
+    await fin.save();
+    res.status(200).json(fin);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+router.get("/:id/checkOrder", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const fin = await User.findById(id);
+    if (!fin) {
+      return res.json({ message: "There is no user have this id" });
+    }
+
+    res.status(200).json(fin.order);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 router.put("/:id/:product_id/update", async (req, res) => {
   const { id, product_id } = req.params;
   const { quantity } = req.body;
   try {
     const fin = await User.findById(id);
     if (!fin) {
-      res.json({ message: "There is no user have this id" });
+      return res.json({ message: "There is no user have this id" });
     }
     for (let item of fin.cart) {
       if (product_id == item.product) {
@@ -36,7 +80,7 @@ router.post("/:id/:product_id", async (req, res) => {
   try {
     const fin = await User.findById(id);
     if (!fin) {
-      res.json({ message: "There is no user have this id" });
+      return res.json({ message: "There is no user have this id" });
     }
     const p = new mongoose.Types.ObjectId(product_id);
     fin.cart.push({
@@ -55,7 +99,7 @@ router.delete("/:id/:product_id", async (req, res) => {
   try {
     const fin = await User.findById(id);
     if (!fin) {
-      res.json({ message: "There is no user have this id" });
+      return res.json({ message: "There is no user have this id" });
     }
 
     fin.cart.pull({

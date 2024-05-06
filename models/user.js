@@ -56,6 +56,31 @@ const userSchema = new Schema(
         },
       },
     ],
+    order: [
+      {
+        cart1: [
+          {
+            product1: {
+              type: Schema.Types.ObjectId,
+              ref: "Book",
+              require: false,
+            },
+            quantity1: {
+              type: Number,
+              require: false,
+            },
+          },
+        ],
+        totalPrice: {
+          type: Number,
+          require: true,
+        },
+        orderdate: {
+          type: Date,
+          require: true,
+        },
+      },
+    ],
   },
   { collection: "Users", versionKey: false }
 );
