@@ -79,6 +79,10 @@ const userSchema = new Schema(
           type: Date,
           require: true,
         },
+        onDelivery: {
+          type: Boolean,
+          require: true,
+        },
       },
     ],
   },

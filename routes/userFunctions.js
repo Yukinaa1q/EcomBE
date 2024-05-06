@@ -21,6 +21,7 @@ router.get("/:id/:price/setOrder", async (req, res) => {
 
     fin.order.push({
       totalPrice: price,
+      onDelivery: true,
       orderdate: day.toLocaleString(),
       cart1: [],
     });
